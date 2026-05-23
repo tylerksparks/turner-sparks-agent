@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Turner Sparks – Lead Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #1a2744;
+      --navy-light: #243258;
+      --gold: #c9a84c;
+      --gold-light: #e8c96a;
+      --cream: #f8f4ec;
+      --cream-dark: #ede8dc;
+      --green: #2d5a27;
+      --white: #ffffff;
+      --gray: #6b7280;
+      --shadow: 0 4px 24px rgba(26,39,68,0.13);
+      --shadow-lg: 0 8px 40px rgba(26,39,68,0.18);
+    }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--cream);
+      color: var(--navy);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--navy);
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -45deg, transparent, transparent 18px,
+        rgba(201,168,76,0.06) 18px, rgba(201,168,76,0.06) 20px
+      );
+    }
+    .header-inner {
+      position: relative;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 48px 24px 40px;
+      text-align: center;
+    }
+    .crest {
+      width: 72px; height: 72px;
+      margin: 0 auto 18px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px;
+      box-shadow: 0 0 0 4px rgba(201,168,76,0.25);
+    }
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 5vw, 42px);
+      color: var(--white);
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    .gold-rule { width: 60px; height: 2px; background: var(--gold); margin: 14px auto; }
+    header p {
+      color: rgba(255,255,255,0.72);
+      font-size: 15px; font-weight: 300; letter-spacing: 0.5px;
+      max-width: 500px; margin: 0 auto;
+    }
+
+    /* ── Container ── */
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px 64px; }
+
+    /* ── Search Card ── */
+    .search-card {
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: var(--shadow-lg);
+      padding: 0 0 36px;
+      margin-top: -28px;
+      position: relative;
+      border-top: 4px solid var(--gold);
+      overflow: hidden;
+    }
+
+    /* ── Tabs ── */
+    .tab-nav {
+      display: flex;
+      border-bottom: 2px solid var(--cream-dark);
+      background: var(--white);
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 18px 16px;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      font-family: 'Lato', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--gray);
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+    }
+    .tab-btn:hover { color: var(--navy); background: var(--cream); }
+    .tab-btn.active { color: var(--navy); border-bottom-color: var(--gold); }
+
+    /* ── Panel ── */
+    .panel { display: none; padding: 32px 40px 0; }
+    .panel.active { display: block; }
+    @media (max-width: 600px) { .panel { padding: 24px 20px 0; } }
+
+    .panel h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; color: var(--navy);
+      margin-bottom: 24px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .panel h2::after { content: ''; flex: 1; height: 1px; background: var(--cream-dark); }
+
+    /* ── Form Grid ── */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+
+    label {
+      display: block;
+      font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
+      text-transform: uppercase; color: var(--gray); margin-bottom: 7px;
+    }
+    input[type="text"], select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--cream-dark);
+      border-radius: 8px;
+      font-family: 'Lato', sans-serif;
+      font-size: 15px; color: var(--navy);
+      background: var(--cream);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      appearance: none; -webkit-appearance: none;
+    }
+    input[type="text"]:focus, select:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
+      background: var(--white);
+    }
+    .select-wrap { position: relative; }
+    .select-wrap::after {
+      content: '▾';
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      color: var(--gold); pointer-events: none; font-size: 14px;
+    }
+
+    /* ── Search Scope pill toggles ── */
+    .scope-row {
+      grid-column: 1 / -1;
+    }
+    .scope-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .scope-pill {
+      padding: 8px 16px;
+      border: 2px solid var(--cream-dark);
+      border-radius: 20px;
+      background: var(--cream);
+      color: var(--navy);
+      font-family: 'Lato', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+      user-select: none;
+    }
+    .scope-pill:hover {
+      border-color: var(--gold);
+    }
+    .scope-pill.active {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: #fff;
+    }
+
+    /* ── CMAA single-field form ── */
+    .cmaa-form { margin-bottom: 28px; }
+    .cmaa-form .select-wrap { max-width: 340px; }
+    .cmaa-note {
+      margin-top: 12px;
+      font-size: 13px; color: var(--gray); font-style: italic;
+    }
+
+    /* ── Button ── */
+    .btn-search {
+      width: 100%;
+      padding: 16px;
+      background: var(--navy);
+      color: var(--white);
+      border: none; border-radius: 10px;
+      font-family: 'Playfair Display', serif;
+      font-size: 17px; letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      box-shadow: 0 4px 16px rgba(26,39,68,0.2);
+    }
+    .btn-search:hover { background: var(--navy-light); box-shadow: 0 6px 20px rgba(26,39,68,0.28); }
+    .btn-search:active { transform: scale(0.99); }
+    .btn-search:disabled { background: #8a97b0; cursor: not-allowed; box-shadow: none; }
+
+    /* ── Error ── */
+    #error-box {
+      display: none;
+      background: #fff5f5; border: 2px solid #feb2b2; border-radius: 10px;
+      padding: 18px 22px; margin: 20px 40px 0; color: #c53030; font-size: 14px;
+    }
+    @media (max-width: 600px) { #error-box { margin: 16px 20px 0; } }
+
+    /* ── Loading ── */
+    #loading {
+      display: none; text-align: center; padding: 48px 24px;
+    }
+    .spinner {
+      width: 48px; height: 48px;
+      border: 4px solid var(--cream-dark); border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      margin: 0 auto 20px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loading p { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--navy); margin-bottom: 6px; }
+    #loading small { color: var(--gray); font-size: 13px; }
+
+    /* ── Results ── */
+    #results { margin-top: 40px; }
+    .results-header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+    .results-header h2 { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--navy); }
+    .badge {
+      background: var(--gold); color: var(--navy);
+      font-size: 12px; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px; letter-spacing: 0.5px;
+    }
+
+    /* ── Lead Card ── */
+    .lead-card {
+      background: var(--white); border-radius: 14px; box-shadow: var(--shadow);
+      margin-bottom: 28px; overflow: hidden;
+      border: 1px solid var(--cream-dark);
+      transition: box-shadow 0.2s;
+    }
+    .lead-card:hover { box-shadow: var(--shadow-lg); }
+
+    .lead-header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      padding: 22px 28px;
+      display: flex; align-items: flex-start; gap: 16px;
+    }
+    .lead-number {
+      width: 36px; height: 36px;
+      background: var(--gold); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif; font-weight: 700; font-size: 16px;
+      color: var(--navy); flex-shrink: 0;
+    }
+    .lead-title-block { flex: 1; }
+    .lead-title-block h3 { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--white); margin-bottom: 4px; }
+    .lead-title-block p { color: var(--gold-light); font-size: 13px; font-weight: 300; }
+
+    /* CMAA header accent */
+    .lead-header.cmaa-header { background: linear-gradient(135deg, #1e3a2f 0%, #2d5a45 100%); }
+    .lead-header.cmaa-header .lead-number { background: var(--gold); }
+
+    .lead-body { padding: 24px 28px; }
+
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; margin-bottom: 20px;
+    }
+    @media (max-width: 540px) {
+      .contact-grid { grid-template-columns: 1fr; }
+      .lead-header { flex-direction: column; }
+    }
+
+    .info-item label { color: var(--gold); font-size: 10px; }
+    .info-item p { font-size: 14px; color: var(--navy); font-weight: 400; margin-top: 2px; }
+    .info-item a { color: var(--navy); text-decoration: none; }
+    .info-item a:hover { color: var(--gold); }
+
+    .budget-fit-badge {
+      display: flex; align-items: flex-start; gap: 8px;
+      background: #f0f7ee; border: 1px solid #7cb87a; border-radius: 8px;
+      padding: 10px 14px; margin-bottom: 14px;
+      font-size: 13px; color: #2d6a2d; font-weight: 500; line-height: 1.5;
+    }
+    .budget-fit-badge.prestige-badge {
+      background: #f0f0fb; border-color: #8b7cc8; color: #3d2f7a;
+    }
+    .budget-fit-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+
+    .myrna-priority-note {
+      background: #fff8e8; border: 1px solid #e6c86e; border-radius: 8px;
+      padding: 8px 14px; margin-bottom: 12px;
+      font-size: 12px; color: #7a5c00;
+    }
+    .info-item.priority-field {
+      border: 1.5px solid var(--gold); border-radius: 8px; padding: 10px 12px; background: #fffbf0;
+    }
+    .info-item.priority-field label { color: #b8860b; font-weight: 700; }
+
+    .notes-section {
+      margin-top: 16px; border-top: 1px solid #e8e8e8; padding-top: 14px;
+    }
+    .notes-section label {
+      font-size: 12px; font-weight: 700; color: var(--gray); text-transform: uppercase;
+      letter-spacing: 0.6px; display: block; margin-bottom: 6px;
+    }
+    .notes-section .note-stamp {
+      font-size: 11px; color: #aaa; margin-bottom: 6px; font-style: italic;
+    }
+    .notes-section textarea {
+      width: 100%; box-sizing: border-box; border: 1px solid #ddd; border-radius: 6px;
+      padding: 8px 10px; font-size: 13px; font-family: inherit; color: var(--navy);
+      resize: vertical; min-height: 60px; outline: none; transition: border-color 0.2s;
+    }
+    .notes-section textarea:focus { border-color: var(--gold); }
+    .notes-section .note-actions { display: flex; gap: 8px; margin-top: 7px; align-items: center; }
+    .notes-section .btn-save-note {
+      background: var(--navy); color: #fff; border: none; border-radius: 6px;
+      padding: 6px 16px; font-size: 12px; font-weight: 600; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .notes-section .btn-save-note:hover { background: var(--gold); }
+    .notes-section .note-saved-msg { font-size: 12px; color: #27ae60; display:none; }
+
+    .club-desc {
+      background: var(--cream); border-left: 3px solid var(--gold);
+      padding: 14px 18px; border-radius: 0 8px 8px 0;
+      font-size: 14px; color: var(--gray); line-height: 1.6;
+      margin-bottom: 22px; font-style: italic;
+    }
+
+    .pitch-section h4 {
+      font-family: 'Playfair Display', serif; font-size: 15px; color: var(--navy);
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    .sender-badge {
+      font-family: 'Lato', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.6px; text-transform: uppercase;
+      background: var(--gold); color: var(--navy);
+      padding: 2px 8px; border-radius: 20px;
+    }
+    .pitch-email {
+      background: var(--cream); border: 1px solid var(--cream-dark); border-radius: 10px;
+      padding: 20px 22px; font-size: 14px; line-height: 1.75; color: #374151;
+      white-space: pre-wrap; font-family: 'Lato', sans-serif; position: relative;
+    }
+    .pitch-email a {
+      color: var(--navy); text-decoration: underline; text-underline-offset: 2px; word-break: break-all;
+    }
+    .pitch-email a:hover { color: var(--gold); }
+    .pitch-email-wrap { position: relative; }
+
+    .copy-btn {
+      position: absolute; top: 12px; right: 12px;
+      background: var(--navy); color: var(--white);
+      border: none; border-radius: 6px; padding: 6px 12px;
+      font-size: 12px; cursor: pointer; font-family: 'Lato', sans-serif;
+      letter-spacing: 0.5px; transition: background 0.2s;
+    }
+    .copy-btn:hover { background: var(--gold); color: var(--navy); }
+    .copy-btn.copied { background: var(--green); }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center; padding: 32px 24px;
+      color: var(--gray); font-size: 13px;
+      border-top: 1px solid var(--cream-dark);
+    }
+    footer strong { color: var(--navy); }
+
+    /* ── History ── */
+    .history-empty { text-align:center; padding:48px 24px; color:var(--gray); font-size:15px; font-style:italic; }
+    .history-city-group { margin-bottom:32px; }
+    .history-city-heading {
+      font-family:'Playfair Display',serif; font-size:17px; color:var(--navy);
+      border-bottom:2px solid var(--gold); padding-bottom:8px; margin-bottom:14px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .history-entry {
+      background:var(--white); border:1px solid var(--cream-dark); border-radius:10px;
+      padding:14px 18px; margin-bottom:10px;
+      display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    }
+    .history-entry-info { flex:1; min-width:180px; }
+    .history-entry-info .h-label { font-size:13px; font-weight:700; color:var(--navy); }
+    .history-entry-info .h-meta { font-size:12px; color:var(--gray); margin-top:2px; }
+    .history-entry-info .h-tag {
+      display:inline-block; font-size:10px; font-weight:700; letter-spacing:0.6px;
+      text-transform:uppercase; background:var(--navy); color:var(--white);
+      padding:2px 7px; border-radius:20px; margin-right:4px;
+    }
+    .history-entry-info .h-tag.cmaa { background:#1e3a2f; }
+    .btn-view {
+      background:var(--gold); color:var(--navy); border:none; border-radius:7px;
+      padding:8px 16px; font-size:13px; font-weight:700; cursor:pointer;
+      font-family:'Lato',sans-serif; transition:background 0.2s;
+      white-space:nowrap;
+    }
+    .btn-view:hover { background:var(--gold-light); }
+    .btn-del {
+      background:none; color:#c0392b; border:1px solid #e0b0b0; border-radius:7px;
+      padding:7px 13px; font-size:12px; cursor:pointer;
+      font-family:'Lato',sans-serif; transition:background 0.2s, color 0.2s;
+      white-space:nowrap;
+    }
+    .btn-del:hover { background:#fff0f0; }
+    .btn-clear-all {
+      display:block; margin:24px auto 0;
+      background:none; color:var(--gray); border:1px solid var(--cream-dark);
+      border-radius:7px; padding:9px 20px; font-size:13px; cursor:pointer;
+      font-family:'Lato',sans-serif; transition:color 0.2s, border-color 0.2s;
+    }
+    .btn-clear-all:hover { color:#c0392b; border-color:#e0b0b0; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="crest">🎤</div>
+    <h1>Turner Sparks</h1>
+    <div class="gold-rule"></div>
+    <p>Lead Generator &mdash; Crafted pitches for every audience</p>
+  </div>
+</header>
+
+<div class="container">
+  <div class="search-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-clubs" onclick="switchTab('clubs')">⛳ Clubs</button>
+      <button class="tab-btn" id="tab-cmaa" onclick="switchTab('cmaa')">🏛️ CMAA Chapters</button>
+      <button class="tab-btn" id="tab-history" onclick="switchTab('history')">📋 History</button>
+    </div>
+
+    <!-- ── Clubs Panel ── -->
+    <div id="panel-clubs" class="panel active">
+      <h2>Find Your Next Engagement</h2>
+      <div class="form-grid">
+        <div>
+          <label for="city">City</label>
+          <input type="text" id="city" placeholder="e.g., Scottsdale, AZ" value="Scottsdale, AZ" />
+        </div>
+        <div class="scope-row">
+          <label>Search Scope <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray);font-size:10px;">(select one or more)</span></label>
+          <div class="scope-pills" id="scopePills">
+            <button type="button" class="scope-pill active" data-value="metropolitan area" onclick="toggleScope(this)">Metropolitan Area</button>
+            <button type="button" class="scope-pill" data-value="city proper" onclick="toggleScope(this)">City Proper</button>
+            <button type="button" class="scope-pill" data-value="surrounding suburbs" onclick="toggleScope(this)">Surrounding Suburbs</button>
+            <button type="button" class="scope-pill" data-value="statewide" onclick="toggleScope(this)">Statewide</button>
+            <button type="button" class="scope-pill" data-value="regional (multi-state)" onclick="toggleScope(this)">Regional (Multi-State)</button>
+          </div>
+        </div>
+        <div>
+          <label for="clubType">Club Type</label>
+          <div class="select-wrap">
+            <select id="clubType" onchange="handleClubTypeChange()">
+              <option value="private country club">Private Country Club</option>
+              <option value="comedy club">Comedy Club</option>
+              <option value="yacht club">Yacht Club</option>
+            </select>
+          </div>
+        </div>
+        <div id="eventFocusWrap">
+          <label for="eventFocus">Event Focus</label>
+          <div class="select-wrap">
+            <select id="eventFocus">
+              <option value="country club comedy night (dinner and a show for members)">Country Club Comedy Night</option>
+              <option value="gala dinner entertainment">Gala Dinner Entertainment</option>
+              <option value="member appreciation night">Member Appreciation Night</option>
+              <option value="charity fundraiser">Charity Fundraiser</option>
+              <option value="holiday party">Holiday Party</option>
+              <option value="corporate sponsor event">Corporate Sponsor Event</option>
+              <option value="awards ceremony entertainment">Awards Ceremony Entertainment</option>
+            </select>
+          </div>
+          <p id="eventFocusNote" style="display:none; font-size:12px; color:var(--gray); margin-top:6px;">Not applicable for comedy clubs — the show is always a standup set.</p>
+        </div>
+        <div>
+          <label for="clubsSender">Send Email As</label>
+          <div class="select-wrap">
+            <select id="clubsSender" onchange="onSenderChange()">
+              <option value="turner">Turner Sparks (himself)</option>
+              <option value="myrna">Myrna Midkiff (Booking Manager)</option>
+            </select>
+          </div>
+        </div>
+        <div id="emailTypeWrap">
+          <label for="emailType">Email Type</label>
+          <div class="select-wrap">
+            <select id="emailType">
+              <option value="initial">Initial Pitch Email</option>
+              <option value="followup">Follow-up to Phone Call</option>
+            </select>
+          </div>
+          <p style="font-size:12px;color:var(--gray);margin-top:6px;">Follow-up assumes the sender already spoke with this person by phone.</p>
+        </div>
+      </div>
+      <button class="btn-search" id="searchBtn" onclick="generateLeads()">
+        <span>⛳</span> Generate Leads
+      </button>
+      <div id="hunter-credits-bar"></div>
+    </div>
+
+    <!-- ── CMAA Panel ── -->
+    <div id="panel-cmaa" class="panel">
+      <h2>Find CMAA Chapter Directors</h2>
+      <div class="cmaa-form">
+        <label for="cmaaState">State</label>
+        <div class="select-wrap">
+          <select id="cmaaState">
+            <option value="">Select a state…</option>
+            <option value="Alabama">Alabama</option>
+            <option value="Alaska">Alaska</option>
+            <option value="Arizona">Arizona</option>
+            <option value="Arkansas">Arkansas</option>
+            <option value="California">California</option>
+            <option value="Colorado">Colorado</option>
+            <option value="Connecticut">Connecticut</option>
+            <option value="Delaware">Delaware</option>
+            <option value="Florida">Florida</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Hawaii">Hawaii</option>
+            <option value="Idaho">Idaho</option>
+            <option value="Illinois">Illinois</option>
+            <option value="Indiana">Indiana</option>
+            <option value="Iowa">Iowa</option>
+            <option value="Kansas">Kansas</option>
+            <option value="Kentucky">Kentucky</option>
+            <option value="Louisiana">Louisiana</option>
+            <option value="Maine">Maine</option>
+            <option value="Maryland">Maryland</option>
+            <option value="Massachusetts">Massachusetts</option>
+            <option value="Michigan">Michigan</option>
+            <option value="Minnesota">Minnesota</option>
+            <option value="Mississippi">Mississippi</option>
+            <option value="Missouri">Missouri</option>
+            <option value="Montana">Montana</option>
+            <option value="Nebraska">Nebraska</option>
+            <option value="Nevada">Nevada</option>
+            <option value="New Hampshire">New Hampshire</option>
+            <option value="New Jersey">New Jersey</option>
+            <option value="New Mexico">New Mexico</option>
+            <option value="New York">New York</option>
+            <option value="North Carolina">North Carolina</option>
+            <option value="North Dakota">North Dakota</option>
+            <option value="Ohio">Ohio</option>
+            <option value="Oklahoma">Oklahoma</option>
+            <option value="Oregon">Oregon</option>
+            <option value="Pennsylvania">Pennsylvania</option>
+            <option value="Rhode Island">Rhode Island</option>
+            <option value="South Carolina">South Carolina</option>
+            <option value="South Dakota">South Dakota</option>
+            <option value="Tennessee">Tennessee</option>
+            <option value="Texas">Texas</option>
+            <option value="Utah">Utah</option>
+            <option value="Vermont">Vermont</option>
+            <option value="Virginia">Virginia</option>
+            <option value="Washington">Washington</option>
+            <option value="Washington DC">Washington DC</option>
+            <option value="West Virginia">West Virginia</option>
+            <option value="Wisconsin">Wisconsin</option>
+            <option value="Wyoming">Wyoming</option>
+          </select>
+        </div>
+        <p class="cmaa-note">Shows all CMAA chapter directors whose territory includes the selected state. Contacts are sourced from the official CMAA chapter directory.</p>
+      </div>
+      <div class="cmaa-form" style="margin-top:16px;">
+        <label for="cmaaSender">Send Email As</label>
+        <div class="select-wrap">
+          <select id="cmaaSender">
+            <option value="turner">Turner Sparks (himself)</option>
+            <option value="myrna">Myrna Midkiff (Booking Manager)</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-search" id="cmaaBtn" onclick="generateCmaaLeads()">
+        <span>🏛️</span> Find Chapter Directors
+      </button>
+    </div>
+
+    <!-- ── History Panel ── -->
+    <div id="panel-history" class="panel">
+      <h2>Search History</h2>
+      <div id="history-list"></div>
+    </div>
+
+    <div id="error-box"></div>
+  </div>
+
+  <div id="loading">
+    <div class="spinner"></div>
+    <p id="loading-text">Sourcing leads&hellip;</p>
+    <small>Finding &amp; ranking 15 real clubs, looking up contacts, then crafting personalized pitches &mdash; this takes about 60&ndash;90 seconds</small>
+  </div>
+
+  <div id="results"></div>
+</div>
+
+<footer>
+  Built for <strong>Turner Sparks</strong> &mdash; The Comedian for the Discerning Crowd
+</footer>
+
+<script>
+  let activeTab = 'clubs';
+
+  function handleClubTypeChange() {
+    const isComedy = document.getElementById('clubType').value === 'comedy club';
+    const sel = document.getElementById('eventFocus');
+    const wrap = document.getElementById('eventFocusWrap');
+    const note = document.getElementById('eventFocusNote');
+    sel.disabled = isComedy;
+    wrap.style.opacity = isComedy ? '0.45' : '1';
+    note.style.display = isComedy ? 'block' : 'none';
+  }
+
+  function switchTab(tab) {
+    activeTab = tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    document.getElementById('panel-' + tab).classList.add('active');
+    document.getElementById('results').innerHTML = '';
+    hideError();
+    if (tab === 'history') renderHistory();
+  }
+
+  /* ── Cache & History (server-backed) ── */
+  function toggleScope(btn) {
+    const active = document.querySelectorAll('#scopePills .scope-pill.active');
+    if (btn.classList.contains('active') && active.length === 1) return; // keep at least one
+    btn.classList.toggle('active');
+  }
+
+  function getSelectedScopes() {
+    const selected = [...document.querySelectorAll('#scopePills .scope-pill.active')]
+      .map(b => b.dataset.value);
+    if (selected.length === 0) return 'metropolitan area';
+    if (selected.length === 1) return selected[0];
+    const last = selected.pop();
+    return selected.join(', ') + ', and ' + last;
+  }
+
+  function buildCacheKey(tab, params) {
+    if (tab === 'cmaa') return `cache:cmaa:${(params.state||'').toLowerCase()}:${params.sender}`;
+    return `cache:clubs:${(params.city||'').toLowerCase()}:${params.clubType}:${params.searchScope}:${params.eventFocus}:${params.sender}:${params.emailType||'initial'}`;
+  }
+
+  async function cacheGet(key) {
+    try {
+      const res = await fetch('/api/cache/get', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ key }) });
+      const data = await res.json();
+      return data.entry || null;
+    } catch (_) { return null; }
+  }
+
+  async function cacheSave(key, leads, tab, params) {
+    try {
+      await fetch('/api/cache/save', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ key, leads, tab, params }) });
+    } catch (_) {}
+  }
+
+  async function deleteHistoryEntry(key) {
+    try { await fetch('/api/cache/delete', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ key }) }); } catch (_) {}
+    renderHistory();
+  }
+
+  async function clearAllHistory() {
+    try { await fetch('/api/history/clear', { method:'POST' }); } catch (_) {}
+    renderHistory();
+  }
+
+  async function viewHistoryResult(key) {
+    const entry = await cacheGet(key);
+    if (!entry) { alert('This result has expired (older than 60 days). Please run a new search.'); renderHistory(); return; }
+    activeTab = entry.tab === 'cmaa' ? 'cmaa' : 'clubs';
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + activeTab).classList.add('active');
+    document.getElementById('panel-' + activeTab).classList.add('active');
+    hideError();
+    document.getElementById('results').innerHTML = '';
+    if (entry.tab === 'cmaa') {
+      renderCmaaLeads(entry.leads, entry.params.state, entry.params.sender);
+    } else {
+      renderLeads(entry.leads, entry.params);
+    }
+  }
+
+  async function renderHistory() {
+    const list = document.getElementById('history-list');
+    list.innerHTML = '<p class="history-empty">Loading&hellip;</p>';
+    let index = [];
+    try {
+      const res = await fetch('/api/history');
+      const data = await res.json();
+      index = data.index || [];
+    } catch (_) {}
+    if (index.length === 0) {
+      list.innerHTML = '<p class="history-empty">No search history yet. Run a search to save it here automatically.</p>';
+      return;
+    }
+    const groups = {};
+    const cityOrder = [];
+    index.forEach(e => {
+      if (!groups[e.city]) { groups[e.city] = []; cityOrder.push(e.city); }
+      groups[e.city].push(e);
+    });
+    list.innerHTML = cityOrder.map(city => `
+      <div class="history-city-group">
+        <div class="history-city-heading">📍 ${escHtml(city)}</div>
+        ${groups[city].map(e => `
+          <div class="history-entry">
+            <div class="history-entry-info">
+              <div class="h-label">
+                <span class="h-tag${e.tab === 'cmaa' ? ' cmaa' : ''}">${e.tab === 'cmaa' ? 'CMAA' : 'Clubs'}</span>
+                ${escHtml(e.city)}
+              </div>
+              <div class="h-meta">${escHtml(e.date)} &nbsp;·&nbsp; ${escHtml(e.filters)}</div>
+            </div>
+            <button class="btn-view" onclick="viewHistoryResult('${e.key.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')">View Results</button>
+            <button class="btn-del" onclick="deleteHistoryEntry('${e.key.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')">Delete</button>
+          </div>`).join('')}
+      </div>`).join('');
+    list.innerHTML += '<button class="btn-clear-all" onclick="clearAllHistory()">Clear All History</button>';
+  }
+
+  /* ── Hunter credits ── */
+  async function fetchHunterCredits() {
+    try {
+      const res = await fetch('/api/hunter-credits');
+      const data = await res.json();
+      const bar = document.getElementById('hunter-credits-bar');
+      if (!bar) return;
+      const accounts = data.accounts || [];
+      if (accounts.length === 0) { bar.innerHTML = ''; return; }
+      const allEmpty = accounts.every(a => a.available === 0);
+      const rows = accounts.map(a => {
+        const pct = Math.max(0, Math.min(100, Math.round(((a.available || 0) / (a.total || 50)) * 100)));
+        const color = a.available === 0 ? '#e74c3c' : a.available <= 10 ? '#e67e22' : '#27ae60';
+        return `<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span style="min-width:72px;">${a.label}:</span>
+          <div style="flex:1;min-width:100px;max-width:180px;background:#e8e8e8;border-radius:6px;height:7px;overflow:hidden;">
+            <div style="width:${pct}%;height:100%;background:${color};border-radius:6px;transition:width 0.4s;"></div>
+          </div>
+          <span style="font-weight:600;color:${color};">${a.available} / ${a.total}</span>
+        </div>`;
+      }).join('');
+      bar.innerHTML = `
+        <div style="margin-top:12px;font-size:12px;color:#888;display:flex;flex-direction:column;gap:6px;">
+          <span style="font-weight:600;letter-spacing:0.4px;">Hunter contact credits:</span>
+          ${rows}
+          ${allEmpty ? '<span style="color:#e74c3c;font-weight:600;">&#9888; All credits exhausted &mdash; contact lookup disabled until next month</span>' : ''}
+        </div>`;
+    } catch (_) {}
+  }
+
+  /* ── Clubs ── */
+  async function generateLeads() {
+    const city = document.getElementById('city').value.trim();
+    const searchScope = getSelectedScopes();
+    const clubType = document.getElementById('clubType').value;
+    const eventFocus = document.getElementById('eventFocus').value;
+    const sender = document.getElementById('clubsSender').value;
+    const emailType = document.getElementById('emailType').value;
+
+    if (!city) { showError('Please enter a city.'); return; }
+    hideError();
+    document.getElementById('results').innerHTML = '';
+
+    const params = { city, searchScope, clubType, eventFocus, sender, emailType };
+    const cacheKey = buildCacheKey('clubs', params);
+    const cached = await cacheGet(cacheKey);
+    if (cached) {
+      renderLeads(cached.leads, params);
+      return;
+    }
+
+    try {
+      // Step 1 — find clubs
+      setLoading(true, 'Step 1 of 3 \u2014 Finding clubs\u2026');
+      const r1 = await fetch('/api/leads/step1', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ city, searchScope, clubType })
+      });
+      const d1 = await r1.json();
+      if (!r1.ok || d1.error) throw new Error(d1.error || 'Step 1 failed.');
+
+      // Step 2 — enrich contacts
+      setLoading(true, 'Step 2 of 3 \u2014 Looking up contacts\u2026');
+      const r2 = await fetch('/api/leads/step2', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ clubs: d1.clubs })
+      });
+      const d2 = await r2.json();
+      if (!r2.ok || d2.error) throw new Error(d2.error || 'Step 2 failed.');
+
+      // Render cards immediately with placeholders, then generate emails in parallel
+      setLoading(false);
+      const enrichedClubs = d2.clubs;
+      const shellLeads = enrichedClubs.map(c => ({
+        clubName: c.clubName,
+        contactName: c.contactName || 'Looking up\u2026',
+        contactTitle: c.contactTitle || '',
+        contactEmail: c.contactEmail || '',
+        phone: c.contactPhone || '',
+        website: c.website || '',
+        budgetFit: c.budgetFit || '',
+        clubDescription: '',
+        pitchEmail: ''
+      }));
+      renderLeads(shellLeads, params, true);
+      fetchHunterCredits();
+
+      // Fire one request per club in parallel — each takes ~5-8s, well under any timeout
+      let completed = 0;
+      const leads = [...shellLeads];
+      await Promise.all(enrichedClubs.map(async (club, i) => {
+        try {
+          const re = await fetch('/api/leads/email', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ club, clubType, eventFocus, sender, emailType, city })
+          });
+          const de = await re.json();
+          if (re.ok && de.lead) {
+            leads[i] = de.lead;
+            updateCard(i, de.lead, params);
+          }
+        } catch (_) {}
+        completed++;
+        updateEmailProgress(completed, enrichedClubs.length);
+      }));
+
+      await cacheSave(cacheKey, leads, 'clubs', params);
+    } catch (err) {
+      showError('Error: ' + err.message);
+      setLoading(false);
+    }
+  }
+
+  function updateEmailProgress(done, total) {
+    const bar = document.getElementById('email-progress-bar');
+    const label = document.getElementById('email-progress-label');
+    if (!bar || !label) return;
+    bar.style.width = Math.round((done / total) * 100) + '%';
+    label.textContent = done < total ? `Writing emails\u2026 ${done}/${total}` : 'All emails ready \u2713';
+    if (done >= total) setTimeout(() => {
+      const wrap = document.getElementById('email-progress-wrap');
+      if (wrap) wrap.style.display = 'none';
+    }, 2000);
+  }
+
+  function updateCard(i, lead, params) {
+    const descEl = document.getElementById('desc-' + i);
+    const pitchEl = document.getElementById('pitch-' + i);
+    const nameEl = document.getElementById('contact-name-' + i);
+    const titleEl = document.getElementById('contact-title-' + i);
+    const emailEl = document.getElementById('contact-email-' + i);
+    const phoneEl = document.getElementById('contact-phone-' + i);
+    if (descEl) descEl.textContent = lead.clubDescription || '';
+    if (pitchEl) pitchEl.innerHTML = linkify(lead.pitchEmail || '');
+    if (nameEl) nameEl.textContent = lead.contactName || '';
+    if (titleEl) titleEl.textContent = lead.contactTitle || '';
+    if (emailEl) {
+      if (lead.contactEmail && lead.contactEmail !== 'Email not found') {
+        emailEl.innerHTML = `<a href="mailto:${escHtml(lead.contactEmail)}">${escHtml(lead.contactEmail)}</a>`;
+      } else {
+        emailEl.textContent = lead.contactEmail || 'Email not found';
+      }
+    }
+    if (phoneEl) {
+      if (lead.phone && lead.phone !== 'Phone not found') {
+        phoneEl.innerHTML = `<a href="tel:${escHtml(lead.phone)}">${escHtml(lead.phone)}</a>`;
+      } else {
+        phoneEl.textContent = lead.phone || 'Phone not found';
+      }
+    }
+  }
+
+  function renderLeads(leads, params, isPending) {
+    const container = document.getElementById('results');
+    const emailLabel = params.emailType === 'followup' ? 'Follow-up Email' : 'Personalized Pitch Email';
+    const senderBadge = params.sender === 'myrna'
+      ? `from Myrna Midkiff${params.emailType === 'followup' ? ' &mdash; after phone call' : ''}`
+      : `from Turner Sparks${params.emailType === 'followup' ? ' &mdash; after phone call' : ''}`;
+
+    container.innerHTML = `
+      <div class="results-header">
+        <h2>Your Leads</h2>
+        <span class="badge">${leads.length} Found</span>
+      </div>
+      ${isPending ? `
+      <div id="email-progress-wrap" style="margin:0 0 16px;padding:10px 14px;background:#f5f0e8;border-radius:8px;border:1px solid #d4b896;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <span id="email-progress-label" style="font-size:13px;color:#5a3e28;font-weight:600;">Writing emails\u2026 0/${leads.length}</span>
+        </div>
+        <div style="background:#e0d5c5;border-radius:4px;height:6px;overflow:hidden;">
+          <div id="email-progress-bar" style="height:100%;width:0%;background:#2d4a6b;border-radius:4px;transition:width 0.3s;"></div>
+        </div>
+      </div>` : ''}`;
+
+    leads.forEach((lead, i) => {
+      const emailHtml = lead.contactEmail && lead.contactEmail !== 'Email not found'
+        ? `<a href="mailto:${escHtml(lead.contactEmail)}">${escHtml(lead.contactEmail)}</a>`
+        : escHtml(lead.contactEmail || 'Email not found');
+      const phoneHtml = lead.phone && lead.phone !== 'Phone not found'
+        ? `<a href="tel:${escHtml(lead.phone)}">${escHtml(lead.phone)}</a>`
+        : escHtml(lead.phone || 'Phone not found');
+
+      const card = document.createElement('div');
+      card.className = 'lead-card';
+      card.innerHTML = `
+        <div class="lead-header">
+          <div class="lead-number">${i + 1}</div>
+          <div class="lead-title-block">
+            <h3>${escHtml(lead.clubName)}</h3>
+            <p>${escHtml(params.clubType)} &mdash; ${escHtml(params.city)}</p>
+          </div>
+        </div>
+        <div class="lead-body">
+          ${params.sender === 'myrna' ? `<div class="myrna-priority-note">📞 <strong>Myrna's priority:</strong> Call first &mdash; Contact Name &amp; Phone are the key fields below.</div>` : ''}
+          <div class="contact-grid">
+            ${params.sender === 'myrna' ? `
+            <div class="info-item priority-field"><label>📞 Contact to Call</label><p id="contact-name-${i}">${escHtml(lead.contactName)}</p></div>
+            <div class="info-item priority-field"><label>📞 Phone</label><p id="contact-phone-${i}">${phoneHtml}</p></div>
+            <div class="info-item"><label>Title</label><p id="contact-title-${i}">${escHtml(lead.contactTitle)}</p></div>
+            <div class="info-item"><label>Email</label><p id="contact-email-${i}">${emailHtml}</p></div>
+            ` : `
+            <div class="info-item"><label>Contact</label><p id="contact-name-${i}">${escHtml(lead.contactName)}</p></div>
+            <div class="info-item"><label>Title</label><p id="contact-title-${i}">${escHtml(lead.contactTitle)}</p></div>
+            <div class="info-item"><label>Email</label><p id="contact-email-${i}">${emailHtml}</p></div>
+            <div class="info-item"><label>Phone</label><p id="contact-phone-${i}">${phoneHtml}</p></div>
+            `}
+            ${lead.website ? `<div class="info-item"><label>Website</label><p><a href="${escHtml(lead.website)}" target="_blank" rel="noopener noreferrer">${escHtml(lead.website)}</a></p></div>` : ''}
+          </div>
+          ${lead.budgetFit ? `<div class="budget-fit-badge ${params.clubType === 'comedy club' ? 'prestige-badge' : ''}"><span class="budget-fit-icon">${params.clubType === 'comedy club' ? '⭐' : '💰'}</span>${escHtml(lead.budgetFit)}</div>` : ''}
+          <div class="club-desc" id="desc-${i}">${escHtml(lead.clubDescription || '')}</div>
+          <div class="pitch-section">
+            <h4><span>✉️</span> ${emailLabel} <span class="sender-badge">${senderBadge}</span></h4>
+            <div class="pitch-email-wrap">
+              <div class="pitch-email" id="pitch-${i}">${lead.pitchEmail ? linkify(lead.pitchEmail) : (isPending ? '<span style="color:#999;font-style:italic;">Writing email\u2026</span>' : '')}</div>
+              <button class="copy-btn" onclick="copyPitch(${i}, 'pitch')">Copy</button>
+            </div>
+          </div>
+          <div class="notes-section">
+            <label>📝 Notes</label>
+            <div class="note-stamp" id="note-stamp-${i}"></div>
+            <textarea id="note-text-${i}" placeholder="e.g. Left voicemail 3/16 · Said call back in April · Spoke with Jennifer"></textarea>
+            <div class="note-actions">
+              <button class="btn-save-note" onclick="saveNote('${(lead.clubName + ':' + params.city).replace(/'/g, "\\'")}', ${i})">Save Note</button>
+              <span class="note-saved-msg" id="note-saved-${i}">✓ Saved</span>
+            </div>
+          </div>
+        </div>`;
+      container.appendChild(card);
+    });
+    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    loadNotesForCards(leads, params.city);
+  }
+
+  async function loadNotesForCards(leads, city) {
+    try {
+      const res = await fetch('/api/notes');
+      const data = await res.json();
+      const notes = data.notes || {};
+      leads.forEach((lead, i) => {
+        const noteKey = lead.clubName + ':' + city;
+        const note = notes[noteKey];
+        if (note) {
+          const ta = document.getElementById('note-text-' + i);
+          const stamp = document.getElementById('note-stamp-' + i);
+          if (ta) ta.value = note.text;
+          if (stamp) stamp.textContent = 'Last saved: ' + note.updatedAt;
+        }
+      });
+    } catch (_) {}
+  }
+
+  async function saveNote(noteKey, idx) {
+    const ta = document.getElementById('note-text-' + idx);
+    const text = ta ? ta.value : '';
+    try {
+      await fetch('/api/notes/save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ noteKey, text }) });
+      const stamp = document.getElementById('note-stamp-' + idx);
+      const msg = document.getElementById('note-saved-' + idx);
+      if (stamp) stamp.textContent = text.trim() ? 'Last saved: ' + new Date().toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : '';
+      if (msg) { msg.style.display = 'inline'; setTimeout(() => { msg.style.display = 'none'; }, 2000); }
+    } catch (_) {}
+  }
+
+  /* ── CMAA ── */
+  async function generateCmaaLeads() {
+    const state = document.getElementById('cmaaState').value;
+    const sender = document.getElementById('cmaaSender').value;
+    if (!state) { showError('Please select a state.'); return; }
+    hideError();
+    document.getElementById('results').innerHTML = '';
+
+    const params = { state, sender };
+    const cacheKey = buildCacheKey('cmaa', params);
+    const cached = await cacheGet(cacheKey);
+    if (cached) {
+      renderCmaaLeads(cached.leads, state, sender);
+      return;
+    }
+
+    setLoading(true, 'Finding CMAA chapter directors\u2026');
+    try {
+      const res = await fetch('/api/cmaa-leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ state, sender })
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) throw new Error(data.error || 'Unknown server error.');
+      if (!data.leads || data.leads.length === 0) {
+        showError('No CMAA chapters found for that state.');
+        return;
+      }
+      await cacheSave(cacheKey, data.leads, 'cmaa', params);
+      renderCmaaLeads(data.leads, state, sender);
+    } catch (err) {
+      showError('Error: ' + err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function renderCmaaLeads(leads, state, sender) {
+    const container = document.getElementById('results');
+    container.innerHTML = `
+      <div class="results-header">
+        <h2>CMAA Chapters</h2>
+        <span class="badge">${leads.length} Chapter${leads.length !== 1 ? 's' : ''} &mdash; ${escHtml(state)}</span>
+      </div>`;
+    leads.forEach((lead, i) => {
+      const card = document.createElement('div');
+      card.className = 'lead-card';
+      card.innerHTML = `
+        <div class="lead-header cmaa-header">
+          <div class="lead-number">${i + 1}</div>
+          <div class="lead-title-block">
+            <h3>${escHtml(lead.chapterName)} Chapter</h3>
+            <p>CMAA &mdash; ${escHtml(lead.states)}</p>
+          </div>
+        </div>
+        <div class="lead-body">
+          <div class="contact-grid">
+            <div class="info-item"><label>Managing Director</label><p>${escHtml(lead.directorName)}</p></div>
+            ${lead.email ? `<div class="info-item"><label>Director Email</label><p><a href="mailto:${escHtml(lead.email)}">${escHtml(lead.email)}</a></p></div>` : ''}
+            <div class="info-item"><label>Organization</label><p>Club Managers Association of America</p></div>
+            ${lead.website ? `<div class="info-item"><label>Chapter Website</label><p><a href="${escHtml(lead.website)}" target="_blank" rel="noopener noreferrer">${escHtml(lead.website)}</a></p></div>` : ''}
+            <div class="info-item"><label>States Covered</label><p>${escHtml(lead.states)}</p></div>
+          </div>
+          <div class="pitch-section">
+            <h4><span>✉️</span> Pitch Email to ${escHtml(lead.directorName)} <span class="sender-badge">${sender === 'myrna' ? 'from Myrna Midkiff' : 'from Turner Sparks'}</span></h4>
+            <div class="pitch-email-wrap">
+              <div class="pitch-email" id="cmaa-pitch-${i}">${linkify(lead.pitchEmail)}</div>
+              <button class="copy-btn" onclick="copyPitch(${i}, 'cmaa-pitch')">Copy</button>
+            </div>
+          </div>
+        </div>`;
+      container.appendChild(card);
+    });
+    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ── Shared Utils ── */
+  function copyPitch(i, prefix) {
+    const el = document.getElementById(`${prefix}-${i}`);
+    navigator.clipboard.writeText(el.innerText).then(() => {
+      const btns = document.querySelectorAll('.copy-btn');
+      const btn = btns[i];
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function escHtml(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function linkify(str) {
+    return escHtml(str).replace(
+      /(https?:\/\/[^\s&]+)/g,
+      '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+    );
+  }
+
+  function setLoading(on, msg) {
+    document.getElementById('loading').style.display = on ? 'block' : 'none';
+    if (msg) document.getElementById('loading-text').textContent = msg;
+    document.getElementById('searchBtn').disabled = on;
+    document.getElementById('cmaaBtn').disabled = on;
+  }
+
+  function showError(msg) {
+    const box = document.getElementById('error-box');
+    box.textContent = msg;
+    box.style.display = 'block';
+  }
+
+  function hideError() {
+    document.getElementById('error-box').style.display = 'none';
+  }
+
+  handleClubTypeChange();
+  fetchHunterCredits();
+</script>
+</body>
+</html>
